@@ -18,12 +18,13 @@ export default styled(Paper)<StyleProps>(({theme, disabled, reserved}) => ({
   margin: 'auto',
   width: 175,
   height: 45,
-  ...(reserved && {
-    backgroundColor: '#00dd00',
-  }),
   ...(disabled && {
     backgroundColor: 'grey',
     cursor: 'not-allowed',
+  }),
+  ...(reserved && {
+    backgroundColor: '#00dd00',
+    cursor: 'default',
   }),
   '&:hover .action': {
     opacity: 1,

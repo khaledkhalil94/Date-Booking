@@ -14,7 +14,7 @@ function ReservationCard(props: ReservationCardProps) {
       {timeSlot && <Confirmation onClick={() => onCancel()} error text="Cancel" />}
       {timeSlot && (
         <Typography variant="subtitle2">
-          {parseDateString(timeSlot.startTime)} - {parseDateString(timeSlot.endTime)}
+          {parseDateString(timeSlot[0])} - {parseDateString(timeSlot[1])}
         </Typography>
       )}
     </Item>

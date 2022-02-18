@@ -10,16 +10,10 @@ const Template: ComponentStory<typeof TimeSlot> = TimeSlot;
 
 export const Default = Template.bind({});
 Default.args = {
-  timeSlot: {
-    startTime: '1/1/2020',
-    endTime: '1/1/2020',
-  },
+  timeSlot: ['1/1/2020', '1/1/2020'],
 };
 
 export const ReservationSlot = Template.bind({});
 ReservationSlot.args = {
-  timeSlot: {
-    startTime: '1/1/2020',
-    endTime: '1/1/2020',
-  },
+  timeSlot: ['1/1/2020', '1/1/2020'],
 };

@@ -11,11 +11,11 @@ function TimeSlot(props: TimeSlotProps) {
   return (
     <Item elevation={3} disabled={disabled} reserved={reserved}>
       {!disabled && timeSlot && (
-        <Confirmation onClick={() => onConfirm?.(timeSlot)} text="Confirm" error={reserved} />
+        <Confirmation onClick={onConfirm} text={reserved ? 'Cancel' : 'Confirm'} error={reserved} />
       )}
       {timeSlot && (
         <Typography variant="h6">
-          {parseDateString(timeSlot.startTime)} - {parseDateString(timeSlot.endTime)}
+          {parseDateString(timeSlot[0])} - {parseDateString(timeSlot[1])}
         </Typography>
       )}
     </Item>

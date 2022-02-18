@@ -17,7 +17,6 @@ export interface TimeSlotProps {
   reserved?: boolean;
   /**
    * callback handler fired on confirming the timeslot
-   * @param timeSlot: the selected time slot
    */
-  onConfirm?: (timeSlot: ITimeSlot) => void;
+  onConfirm?: () => void;
 }

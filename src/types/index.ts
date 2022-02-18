@@ -1,9 +1,4 @@
-export interface ITimeSlot {
-  startTime: string;
-  endTime: string;
-  disabled?: boolean;
-  reserved?: boolean;
-}
+export type ITimeSlot = [string, string];
 
 export interface ITimeSlotsByDay {
   [day: string]: ITimeSlot[];
@@ -15,7 +10,7 @@ export interface ICompany {
   id: ICompanyId;
   name: string;
   type: string;
-  timeSlots: ITimeSlot[];
+  timeSlots: ITimeSlotsByDay;
 }
 
 export interface IReservations {

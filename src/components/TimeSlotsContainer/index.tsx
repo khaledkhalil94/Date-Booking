@@ -1,12 +1,38 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Box, Typography} from '@mui/material';
 import {TimeSlotsContainerProps} from './index.types';
 import Item from './index.styles';
 import TimeSlot from '../TimeSlot';
-import {getDayName} from '../../utils';
+import {getDayName, isDateWithinRange} from '../../utils';
+import useStore from '../../core/store';
+import {ITimeSlot} from '../../types';
 
 function TimeSlotContainer(props: TimeSlotsContainerProps) {
-  const {timeSlotsByDay, onConfirm} = props;
+  const {timeSlotsByDay, onConfirm, companyId} = props;
+  const reservations = useStore(state => state.reservations);
+
+  const isDisabled = useCallback(
+    (timeSlot: ITimeSlot) => {
+      return Object.values(reservations)
+        .filter(Boolean)
+        .some(reservation => isDateWithinRange(timeSlot, reservation));
+    },
+    [reservations],
+  );
+
+  const isReserved = useCallback(
+    (timeSlot: ITimeSlot) => {
+      const companyReservation = reservations[companyId];
+      if (!companyReservation) {
+        return false;
+      }
+      return (
+        new Date(timeSlot[0]).getTime() === new Date(companyReservation[0]).getTime() &&
+        new Date(timeSlot[1]).getTime() === new Date(companyReservation[1]).getTime()
+      );
+    },
+    [companyId, reservations],
+  );
 
   return (
     <Item elevation={2}>
@@ -19,9 +45,9 @@ function TimeSlotContainer(props: TimeSlotsContainerProps) {
                 <Box key={index} my={2}>
                   <TimeSlot
                     timeSlot={timeSlot}
-                    onConfirm={onConfirm}
-                    disabled={timeSlot.disabled}
-                    reserved={timeSlot.reserved}
+                    onConfirm={() => onConfirm(isReserved(timeSlot) ? undefined : timeSlot)}
+                    disabled={isDisabled(timeSlot) && !isReserved(timeSlot)}
+                    reserved={isReserved(timeSlot)}
                   />
                 </Box>
               ))}

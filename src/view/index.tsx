@@ -1,13 +1,12 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import useStore from 'core/store';
 import {Box, Grid} from '@mui/material';
 import Loader from '../components/Loader';
 import TimeSlotContainer from '../components/TimeSlotsContainer';
-import {ICompanyId, ITimeSlot, ITimeSlotsByDay} from '../types';
+import {ICompanyId, ITimeSlot} from '../types';
 import CompanyName from '../components/CompanyTitle';
 import {setCompanyTimeSlot} from '../core/services';
 import ReservationCard from '../components/ReservationCard';
-import {getDayOfYear} from 'date-fns';
 
 function MainPage() {
   const {isLoading, companies, reservations} = useStore(state => ({
@@ -19,15 +18,6 @@ function MainPage() {
   const handleConfirmation = (companyId: ICompanyId, timeSlot?: ITimeSlot) => {
     setCompanyTimeSlot(companyId, timeSlot);
   };
-
-  const groupTimeSlotsByDay = useCallback((timeSlots: ITimeSlot[]): ITimeSlotsByDay => {
-    return timeSlots.reduce<ITimeSlotsByDay>((result, timeSlot) => {
-      const yearDay = getDayOfYear(new Date(timeSlot.startTime));
-      result[yearDay] = result[yearDay] || [];
-      result[yearDay].push(timeSlot);
-      return result;
-    }, {});
-  }, []);
 
   if (isLoading) {
     return <Loader size={40} width="100%" height="100%" />;
@@ -46,7 +36,8 @@ function MainPage() {
               />
             </Box>
             <TimeSlotContainer
-              timeSlotsByDay={groupTimeSlotsByDay(company.timeSlots)}
+              companyId={company.id}
+              timeSlotsByDay={company.timeSlots}
               onConfirm={timeSlot => handleConfirmation(company.id, timeSlot)}
             />
           </Grid>
